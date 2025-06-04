@@ -39,8 +39,8 @@ class ProductData(BaseModel):
 def load_model():
         global model,ImageModel,processor
         model = SentenceTransformer("Model")
-        ImageModel = CLIPModel.from_pretrained(r"E:\ImageModel")
-        processor = CLIPProcessor.from_pretrained(r"E:\ImageModel")
+        ImageModel = CLIPModel.from_pretrained("ImageModel")
+        processor = CLIPProcessor.from_pretrained("ImageModel")
          
 @app.post("/embed/text")
 async def add_embeddings(data:ProductData):
@@ -62,5 +62,5 @@ async def embedImage(files: List[UploadFile] = File(...)):
                 image_embeddings = ImageModel.get_image_features(**inputs)
                 image_embeddings = image_embeddings / image_embeddings.norm(p=2, dim=-1, keepdim=True)
                 embeddings_list.append(image_embeddings.squeeze().tolist())
-                print(embeddings_list)
+                # print(embeddings_list)
         return {"success":True,"status":200,"embeddings":  embeddings_list}
